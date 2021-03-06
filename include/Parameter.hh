@@ -1,14 +1,44 @@
 #ifndef Parameter_hh
 #define Parameter_hh
 
+#include <string>
+
 class Parameter
 {
-private:
-    double fMin;
-    double fMax;
+
 public:
+    enum PriorType{ kNone, kFlat, kGaussian, kPoisson, kEnlargedPoisson, kBinomial };
+    
+private:
+    std::string fName;
+    double      fMin;
+    double      fMax;
+    std::string fUnit;
+    bool        fPriorSet;
+    PriorType   fPriorType;
+    double      fMean;
+    double      fStdDev;
+    
+public:
+
     Parameter();
+    Parameter( std::string name,
+	       double      min,
+	       double      max,
+	       std::string unit="none" );
     ~Parameter();
+
+    // Setters
+    void SetPrior( PriorType priortype,
+		   double    mean=0.,
+		   double    stddev=0. );
+    
+    // Getters
+    std::string GetName(){ return fName; };
+    double      GetMin() { return fMin;  };
+    double      GetMax() { return fMax;  };
+    std::string GetUnit(){ return fUnit; };
+    
 };
 
 #endif
