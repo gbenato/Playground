@@ -17,11 +17,15 @@ int main()
     Global::Initialize();
     
 
+    int seed = 12345;
+    Random rdm(seed);// = new Random(seed);
+    //Random* rdm2 = Random::GetInstance();
+
+
     Parameter* par = new Parameter( "TestPar", 0., 10., "cm" );
     par->SetPrior( Parameter::PriorType::kGaussian, 5., 1. );
 
-    Random rdm;
-
+    
     #ifdef HAVE_ROOT
 	    TH1D* histo = new TH1D();
 	    Log::OutDebug( "Created histo" );

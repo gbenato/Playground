@@ -3,6 +3,8 @@
 
 #include <string>
 
+class Random;
+
 class Parameter
 {
 
@@ -18,6 +20,7 @@ private:
     PriorType   fPriorType;
     double      fMean;
     double      fStdDev;
+    Random*     fRandom;
     
 public:
 

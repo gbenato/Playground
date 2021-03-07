@@ -1,8 +1,10 @@
 #include "Log.hh"
+#include "Random.hh"
 #include "Parameter.hh"
 
 Parameter::Parameter()
 {
+
     fName = "";
     fMin  = 0.;
     fMax  = 0.;
@@ -12,6 +14,9 @@ Parameter::Parameter()
     fPriorType = PriorType::kNone;
     fMean      = 0.;
     fStdDev    = 0.;
+
+    fRandom = Random::GetInstance();
+
 }
 
 Parameter::Parameter( std::string name,
@@ -35,6 +40,9 @@ Parameter::Parameter( std::string name,
     fPriorType = PriorType::kNone;
     fMean      = 0.;
     fStdDev    = 0.;
+
+    fRandom = Random::GetInstance();
+
 }
 
 Parameter::~Parameter()
