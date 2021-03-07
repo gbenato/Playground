@@ -3,18 +3,30 @@
 
 //#include "pcg_random.hpp"
 
+#include <random>
+
 class Random{
     
 public:
-    Random( int seed );
+    Random( unsigned seed );
     ~Random();
     static Random* GetInstance();
 
-    int GetSeed(){ return fSeed; };
+    unsigned GetSeed(){ return fSeed; };
+    double   GetUniform( double min=0.,
+			 double max=1. );
+    double   GetGaussian( double mean=0.,
+			  double sigma=1.,
+			  double min=std::numeric_limits<double>::min(),
+			  double max=-std::numeric_limits<double>::max() );
     
 private:
     static Random* fInstance;
-    int fSeed;
+    unsigned       fSeed;
+    
+    std::mt19937                     fMT;
+    std::uniform_real_distribution<> fUniform;
+    std::normal_distribution<>       fGaussian;
 };
 
 #endif

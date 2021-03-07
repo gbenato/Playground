@@ -17,9 +17,11 @@ int main()
     Global::Initialize();
     
 
-    int seed = 12345;
-    Random rdm(seed);// = new Random(seed);
-    //Random* rdm2 = Random::GetInstance();
+    unsigned seed = 12345;
+    Random rdm(seed);
+    for( int i=0; i<10; i++ )
+	Log::OutDebug( "Random " + std::to_string(i) +
+		       ": " + std::to_string( rdm.GetGaussian( 3, 1, 2.5,3.5 ) ) );
 
 
     Parameter* par = new Parameter( "TestPar", 0., 10., "cm" );
