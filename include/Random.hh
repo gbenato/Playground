@@ -6,10 +6,15 @@
 class Random{
     
 public:
-    Random();
+    Random( int seed );
     ~Random();
-private:
+    static Random* GetInstance();
+
+    int GetSeed(){ return fSeed; };
     
+private:
+    static Random* fInstance;
+    int fSeed;
 };
 
 #endif
