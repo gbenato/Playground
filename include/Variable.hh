@@ -1,12 +1,12 @@
-#ifndef Parameter_hh
-#define Parameter_hh
+#ifndef Variable_hh
+#define Variable_hh
 
 #include <string>
 #include <limits>
 
 class Random;
 
-class Parameter
+class Variable
 {
 
 public:
@@ -25,12 +25,12 @@ private:
     
 public:
 
-    Parameter();
-    Parameter( std::string name,
+    Variable();
+    Variable( std::string name,
 	       double      min=-std::numeric_limits<double>::max(),
 	       double      max=+std::numeric_limits<double>::max(),
 	       std::string unit="none" );
-    ~Parameter();
+    ~Variable();
 
     // Setters
     void SetPrior( PriorType priortype,

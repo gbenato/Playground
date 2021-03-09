@@ -1,8 +1,8 @@
 #include "Log.hh"
 #include "Random.hh"
-#include "Parameter.hh"
+#include "Variable.hh"
 
-Parameter::Parameter()
+Variable::Variable()
 {
 
     fName = "";
@@ -19,7 +19,7 @@ Parameter::Parameter()
 
 }
 
-Parameter::Parameter( std::string name,
+Variable::Variable( std::string name,
 		      double      min,
 		      double      max,
 		      std::string unit )
@@ -30,8 +30,8 @@ Parameter::Parameter( std::string name,
     fUnit     = unit;
 
     Log::OutDebug( "" );
-    Log::OutDebug( "Created parameter: " + fName );
-    Log::OutDebug( "            range: [" +
+    Log::OutDebug( "Created variable: " + fName );
+    Log::OutDebug( "           range: [" +
 		   std::to_string(fMin) + "," +
 		   std::to_string(fMax) + "] " + fUnit );
     Log::OutDebug( "" );
@@ -45,18 +45,18 @@ Parameter::Parameter( std::string name,
 
 }
 
-Parameter::~Parameter()
+Variable::~Variable()
 {
     ;
 }
 
-void Parameter::SetPrior( PriorType priortype,
+void Variable::SetPrior( PriorType priortype,
 			  double    mean,
 			  double    stddev )
 {
     if( fPriorSet )
 	{
-	    Log::OutError( "Prior for parameter " + fName + " already set. Abort." );
+	    Log::OutError( "Prior for variable " + fName + " already set. Abort." );
 	    
 	    exit(1);
 	}
@@ -66,26 +66,26 @@ void Parameter::SetPrior( PriorType priortype,
     fStdDev    = stddev;
 
     Log::OutDebug( "" );
-    Log::OutDebug( "Set prior for parameter: " + fName );
+    Log::OutDebug( "Set prior for variable: " + fName );
     if( fPriorType == PriorType::kFlat )
-	Log::OutDebug( "             prior type: Flat" );
+	Log::OutDebug( "            prior type: Flat" );
     else if( fPriorType == PriorType::kGaussian )
-	Log::OutDebug( "             prior type: Gaussian" );
+	Log::OutDebug( "            prior type: Gaussian" );
     else if( fPriorType == PriorType::kPoisson )
-	Log::OutDebug( "             prior type: Poisson" );
+	Log::OutDebug( "            prior type: Poisson" );
     else if( fPriorType == PriorType::kEnlargedPoisson )
-	Log::OutDebug( "             prior type: EnlargedPoisson" );
+	Log::OutDebug( "            prior type: EnlargedPoisson" );
     else if( fPriorType == PriorType::kBinomial )
-	Log::OutDebug( "             prior type: Binomial" );
-    Log::OutDebug( "                   mean: " + std::to_string( fMean ) );
-    Log::OutDebug( "     standard deviation: " + std::to_string( fStdDev ) );
+	Log::OutDebug( "            prior type: Binomial" );
+    Log::OutDebug( "                  mean: " + std::to_string( fMean ) );
+    Log::OutDebug( "    standard deviation: " + std::to_string( fStdDev ) );
     Log::OutDebug( "" );
     
     fPriorSet = true;
     return;
 }
 
-double Parameter::GenerateRandom()
+double Variable::GenerateRandom()
 {
     return fRandom->GetUniform( fMin, fMax );
 }

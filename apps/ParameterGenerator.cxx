@@ -1,6 +1,6 @@
 #include "Global.hh"
 #include "Log.hh"
-#include "Parameter.hh"
+#include "Variable.hh"
 #include "Random.hh"
 
 #ifdef HAVE_ROOT
@@ -24,8 +24,8 @@ int main()
 		       ": " + std::to_string( rdm.GetGaussian( 3, 1, 2.5,3.5 ) ) );
 
 
-    Parameter* par = new Parameter( "TestPar", 0., 10., "cm" );
-    par->SetPrior( Parameter::PriorType::kGaussian, 5., 1. );
+    Variable* par = new Variable( "TestPar", 0., 10., "cm" );
+    par->SetPrior( Variable::PriorType::kGaussian, 5., 1. );
     
     #ifdef HAVE_ROOT
 	    TH1D* histo = new TH1D();
