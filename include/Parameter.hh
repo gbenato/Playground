@@ -2,6 +2,7 @@
 #define Parameter_hh
 
 #include <string>
+#include <limits>
 
 class Random;
 
@@ -26,8 +27,8 @@ public:
 
     Parameter();
     Parameter( std::string name,
-	       double      min,
-	       double      max,
+	       double      min=-std::numeric_limits<double>::max(),
+	       double      max=+std::numeric_limits<double>::max(),
 	       std::string unit="none" );
     ~Parameter();
 
