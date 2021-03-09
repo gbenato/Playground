@@ -2,6 +2,7 @@
 #include "Log.hh"
 #include "Variable.hh"
 #include "Random.hh"
+#include "Space.hh"
 
 #ifdef HAVE_ROOT
 #include "TH1D.h"
@@ -25,6 +26,10 @@ int main()
 
 
     Variable* par = new Variable( "TestPar", 0., 10., "cm" );
+
+    Space space( "TestSpace" );
+    space.AddVariable( "A", 0., 10., "potatoes" );
+    space.AddVariable( "B", 0., 10., "bananas" );
     
     #ifdef HAVE_ROOT
 	    TH1D* histo = new TH1D();

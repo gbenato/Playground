@@ -5,8 +5,9 @@ find_package(ROOT CONFIG COMPONENTS Core Hist Tree Gpad)
 
 include_directories(${Playground_SOURCE_DIR}/include)
 
-add_library(playgroundlib Variable.cpp
-			  Global.cpp
+add_library(playgroundlib Global.cpp
+			  Space.cpp
+			  Variable.cpp
 			  Log.cpp
 			  Random.cpp )
 
