@@ -25,7 +25,6 @@ int main()
 
 
     Variable* par = new Variable( "TestPar", 0., 10., "cm" );
-    par->SetPrior( Variable::PriorType::kGaussian, 5., 1. );
     
     #ifdef HAVE_ROOT
 	    TH1D* histo = new TH1D();
