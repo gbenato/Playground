@@ -42,6 +42,9 @@ public:
     double      GetMin() { return fMin;  };
     double      GetMax() { return fMax;  };
     std::string GetUnit(){ return fUnit; };
+
+    // Other methods
+    double GenerateRandom();
     
 };
 

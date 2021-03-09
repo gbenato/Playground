@@ -84,3 +84,8 @@ void Parameter::SetPrior( PriorType priortype,
     fPriorSet = true;
     return;
 }
+
+double Parameter::GenerateRandom()
+{
+    return fRandom->GetUniform( fMin, fMax );
+}

@@ -26,7 +26,6 @@ int main()
 
     Parameter* par = new Parameter( "TestPar", 0., 10., "cm" );
     par->SetPrior( Parameter::PriorType::kGaussian, 5., 1. );
-
     
     #ifdef HAVE_ROOT
 	    TH1D* histo = new TH1D();
