@@ -17,8 +17,8 @@ public:
 			 double max=1. );
     double   GetGaussian( double mean=0.,
 			  double sigma=1.,
-			  double min=std::numeric_limits<double>::min(),
-			  double max=-std::numeric_limits<double>::max() );
+			  double min=-std::numeric_limits<double>::max(),
+			  double max=+std::numeric_limits<double>::max() );
     
 private:
     static Random* fInstance;
