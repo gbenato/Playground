@@ -64,3 +64,12 @@ void Space::AddVariable( Variable& variable )
     
     return;
 }
+
+std::vector<double>* Space::GenerateRandomPosition()
+{
+    std::vector<double>* pos = new std::vector<double>( fDimension );
+    for( unsigned int i=0; i<fDimension; i++ )
+	pos->at(i) = fVariableList[i].GenerateRandom();
+    
+    return pos;
+}

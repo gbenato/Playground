@@ -8,6 +8,7 @@ include_directories(${Playground_SOURCE_DIR}/include)
 add_library(playgroundlib Global.cpp
 			  Space.cpp
 			  Variable.cpp
+			  Point.cpp
 			  Log.cpp
 			  Random.cpp )
 

@@ -3,6 +3,7 @@
 #include "Variable.hh"
 #include "Random.hh"
 #include "Space.hh"
+#include "Point.hh"
 
 #ifdef HAVE_ROOT
 #include "TH1D.h"
@@ -29,7 +30,10 @@ int main()
 
     Space space( "TestSpace" );
     space.AddVariable( "A", 0., 10., "potatoes" );
-    space.AddVariable( "B", 0., 10., "bananas" );
+    space.AddVariable( "B", 0., 5., "bananas" );
+
+    Point point( &space );
+    point.GenerateRandomPosition();
     
     #ifdef HAVE_ROOT
 	    TH1D* histo = new TH1D();

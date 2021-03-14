@@ -9,7 +9,7 @@ class Space
 {
 
 public:
-    enum Type{ kObservable, kTransformed };
+    enum Type{ kPhysical, kTransformed };
     
 private:
     std::string           fName;
@@ -20,7 +20,7 @@ private:
     
 public:
     Space( std::string  name,
-	   Type         type=kObservable,
+	   Type         type=kPhysical,
 	   unsigned int dimension=0 );
     ~Space();
 
@@ -30,6 +30,12 @@ public:
 		      std::string unit="none" );
     
     void AddVariable( Variable& variable );
+
+    std::vector<double>* GenerateRandomPosition();
+
+    // Getters
+    Type         GetType()     { return fType;      };
+    unsigned int GetDimension(){ return fDimension; };
 };
 
 #endif
