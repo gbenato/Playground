@@ -1,6 +1,7 @@
 #include "Global.hh"
 #include "Log.hh"
-#include "Variable.hh"
+//#include "Variable.hh"
+#include "Parameter.hh"
 #include "Random.hh"
 #include "Space.hh"
 #include "Point.hh"
@@ -8,6 +9,8 @@
 #ifdef HAVE_ROOT
 #include "TH1D.h"
 #endif
+
+#include "eigen3/Eigen/Eigen"
 
 int main()
 {
@@ -29,17 +32,20 @@ int main()
     Variable* par = new Variable( "TestPar", 0., 10., "cm" );
 
     Space space( "TestSpace" );
-    space.AddVariable( "A", 0., 10., "potatoes" );
-    space.AddVariable( "B", 0., 5., "bananas" );
-
+    space.AddParameter( "A", 0., 10., "potatoes" );
+    space.AddParameter( "B", 0., 5., "bananas" );
+    
     Point point( &space );
     point.GenerateRandomPosition();
+
+    Eigen::MatrixXd testmatrix;
     
     #ifdef HAVE_ROOT
 	    TH1D* histo = new TH1D();
 	    Log::OutDebug( "Created histo" );
     #endif
-    
+
+	    
     Log::OutSummary( "Everything done." );
     
     return 0;
