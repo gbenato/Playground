@@ -10,7 +10,7 @@ Variable::Variable()
     fMax  = 0.;
     fUnit = "none";
 
-    fRandom = Random::GetInstance();
+    //fRandom = Random::GetInstance();
 
 }
 
@@ -31,7 +31,7 @@ Variable::Variable( std::string name,
 		   std::to_string(fMax) + "] " + fUnit );
     Log::OutDebug( "" );
 
-    fRandom = Random::GetInstance();
+    //fRandom = Random::GetInstance();
 
 }
 
@@ -40,7 +40,7 @@ Variable::~Variable()
     ;
 }
 
-double Variable::GenerateRandom()
-{
-    return fRandom->GetUniform( fMin, fMax );
-}
+//double Variable::GenerateRandom()
+//{
+//    return fRandom->GetUniform( fMin, fMax );
+//}

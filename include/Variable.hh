@@ -14,7 +14,7 @@ private:
     double      fMin;
     double      fMax;
     std::string fUnit;
-    Random*     fRandom;
+    //Random*     fRandom;
     
 public:
 

@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Variable.hh"
+#include "Parameter.hh"
 
 class Space
 {
@@ -12,11 +13,10 @@ public:
     enum Type{ kPhysical, kTransformed };
     
 private:
-    std::string           fName;
-    Type                  fType;
-    unsigned int          fDimension;
-    std::vector<Variable> fVariableList;
-    
+    std::string            fName;
+    Type                   fType;
+    unsigned int           fDimension;
+    std::vector<Parameter> fParameterList;
     
 public:
     Space( std::string  name,
@@ -24,12 +24,12 @@ public:
 	   unsigned int dimension=0 );
     ~Space();
 
-    void AddVariable( std::string name,
-		      double      min=-std::numeric_limits<double>::max(),
-		      double      max=+std::numeric_limits<double>::max(),
-		      std::string unit="none" );
+    void AddParameter( std::string name,
+		       double      min=-std::numeric_limits<double>::max(),
+		       double      max=+std::numeric_limits<double>::max(),
+		       std::string unit="none" );
     
-    void AddVariable( Variable& variable );
+    void AddParameter( Parameter& parameter );
 
     std::vector<double>* GenerateRandomPosition();
 

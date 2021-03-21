@@ -5,10 +5,10 @@ Space::Space( std::string  name,
 	      Type         type,
 	      unsigned int dimension )
 {
-    fName         = name;
-    fType         = type;
-    fDimension    = dimension;
-    fVariableList = std::vector<Variable>( fDimension );
+    fName          = name;
+    fType          = type;
+    fDimension     = dimension;
+    fParameterList = std::vector<Parameter>( fDimension );
     
     if( fType == Type::kTransformed &&
 	fDimension == 0 )
@@ -27,38 +27,38 @@ Space::~Space()
     ;
 }
 
-void Space::AddVariable( std::string name,
-			 double      min,
-			 double      max,
-			 std::string unit )
+void Space::AddParameter( std::string name,
+			  double      min,
+			  double      max,
+			  std::string unit )
 {
     for( unsigned int i=0; i<fDimension; i++ )
-	if( name == fVariableList[i].GetName() )
+	if( name == fParameterList[i].GetName() )
 	    {
-		Log::OutError( "Space::AddVariable(): can't have two variables with the same name. Abort." );
+		Log::OutError( "Space::AddParameter(): can't have two parameters with the same name. Abort." );
 		exit(1);
 	    }
     
-    fVariableList.push_back( Variable( name,
-				       min,
-				       max,
-				       unit ) );
-    fDimension ++;
+    fParameterList.push_back( Parameter( name,
+					 min,
+					 max,
+					 unit ) );
+    fDimension++;
 
-    Log::OutDebug( "Added variable " + fVariableList.back().GetName() +
-		   "\twith index " + std::to_string( fDimension -1 ) +
+    Log::OutDebug( "Added parameter " + fParameterList.back().GetName() +
+ 		   "\twith index " + std::to_string( fDimension -1 ) +
 		   "\tto space " + fName );
-    
+
     return;
 }
 
 
-void Space::AddVariable( Variable& variable )
+void Space::AddParameter( Parameter& parameter )
 {
-    fVariableList.push_back( variable );
-    fDimension ++;
+    fParameterList.push_back( parameter );
+    fDimension++;
 
-    Log::OutDebug( "Added variable " + fVariableList.back().GetName() +
+    Log::OutDebug( "Added parameter " + fParameterList.back().GetName() +
 		   "\twith index " + std::to_string( fDimension -1 ) +
 		   "\tto space " + fName );
     
@@ -69,7 +69,7 @@ std::vector<double>* Space::GenerateRandomPosition()
 {
     std::vector<double>* pos = new std::vector<double>( fDimension );
     for( unsigned int i=0; i<fDimension; i++ )
-	pos->at(i) = fVariableList[i].GenerateRandom();
-    
+	    pos->at(i) = fParameterList[i].GenerateRandom();
+
     return pos;
 }
