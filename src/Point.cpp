@@ -4,7 +4,10 @@
 Point::Point( Space* space )
 {
     if( space->GetType() == Space::Type::kPhysical )
-	fOriginalSpaceType = Space::Type::kPhysical;
+	{
+	    fOriginalSpaceType = Space::Type::kPhysical;
+	    fPhysicalSpace     = space;
+	}
     else if( space->GetType() == Space::Type::kTransformed )
 	fOriginalSpaceType = Space::Type::kTransformed;
     fDimension = space->GetDimension();
@@ -12,6 +15,7 @@ Point::Point( Space* space )
     fPhysicalCoordinates    = new std::vector<double>(fDimension);
     fTranslatedCoordinates  = new std::vector<double>(fDimension);
     fRotatedCoordinates     = new std::vector<double>(fDimension);
+
 }
 
 Point::~Point()
