@@ -21,7 +21,7 @@ public:
     
     void   Initialize();
     double MeasureLikelihood( Point* point );
-    double MeasurePrior();
+    //double MeasurePrior();
 
 };
 

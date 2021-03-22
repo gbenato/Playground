@@ -17,6 +17,7 @@ public:
     virtual void   Initialize()                      = 0;
     virtual double MeasureLikelihood( Point* point ) = 0;
     virtual double MeasurePrior( Point* point );
+    double MeasurePosterior( Point* point );
 
     Space* GetPhysicalSpace(){ return fPhysicalSpace; };
 };
