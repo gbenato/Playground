@@ -20,5 +20,9 @@ public:
     ~Point();
 
     void GenerateRandomPosition();
+    
+    unsigned int GetDimension(){ return fDimension; };
+
+    double GetPhysical( unsigned int i ){ return fPhysicalCoordinates->at(i); };
 };
 #endif

@@ -9,4 +9,12 @@ add_executable(ParameterGenerator ParameterGenerator.cxx)
 
 target_link_libraries(ParameterGenerator PUBLIC playgroundlib)
 
+add_executable(TestMatrix TestMatrix.cxx)
+
+target_link_libraries(TestMatrix PUBLIC playgroundlib)
+
+add_executable(TestModel TestModel.cxx)
+
+target_link_libraries(TestModel PUBLIC playgroundlib)
+
 
