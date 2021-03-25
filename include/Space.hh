@@ -3,6 +3,8 @@
 
 #include <vector>
 
+#include "eigen3/Eigen/Eigen"
+
 #include "Variable.hh"
 #include "Parameter.hh"
 
@@ -31,11 +33,14 @@ public:
     
     void AddParameter( Parameter& parameter );
 
-    std::vector<double>* GenerateRandomPosition();
+    //std::vector<double>* GenerateRandomPosition();
+    Eigen::VectorXd GenerateRandomPosition();
 
     // Getters
-    Type         GetType()     { return fType;      };
-    unsigned int GetDimension(){ return fDimension; };
+    Type         GetType()                    { return fType;                      };
+    unsigned int GetDimension()               { return fDimension;                 };
+    double       GetMinRange( unsigned int p ){ return fParameterList[p].GetMin(); };
+    double       GetMaxRange( unsigned int p ){ return fParameterList[p].GetMax(); };
 };
 
 #endif

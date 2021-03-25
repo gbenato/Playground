@@ -14,7 +14,8 @@ add_library(playgroundlib Global.cpp
 			  Log.cpp
 			  Random.cpp
 			  Model.cpp
-			  MultiVariateModel.cpp )
+			  MultiVariateModel.cpp
+			  Machine.cpp )
 
 
 export( TARGETS playgroundlib FILE playgroundlib-exports.cmake )

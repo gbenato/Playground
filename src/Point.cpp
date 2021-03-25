@@ -1,5 +1,7 @@
 #include "Point.hh"
-#include "Log.hh"
+#include "Random.hh"
+
+#include <iostream>
 
 Point::Point( Space* space )
 {
@@ -12,10 +14,18 @@ Point::Point( Space* space )
 	fOriginalSpaceType = Space::Type::kTransformed;
     fDimension = space->GetDimension();
 
-    fPhysicalCoordinates    = new std::vector<double>(fDimension);
-    fTranslatedCoordinates  = new std::vector<double>(fDimension);
-    fRotatedCoordinates     = new std::vector<double>(fDimension);
+    fPhysicalCoordinates   = Eigen::VectorXd(fDimension);
+    fTranslatedCoordinates = Eigen::VectorXd(fDimension);
+    fRotatedCoordinates    = Eigen::VectorXd(fDimension);
+    //fPhysicalCoordinates    = new std::vector<double>(fDimension);
+    //fTranslatedCoordinates  = new std::vector<double>(fDimension);
+    //fRotatedCoordinates     = new std::vector<double>(fDimension);
 
+    fLikelihood           = 0.;
+    fPriorProbability     = 0.;
+    fPosteriorProbability = 0.;
+    
+    fRandom = Random::GetInstance();    
 }
 
 Point::~Point()
@@ -34,9 +44,47 @@ void Point::GenerateRandomPosition()
     fPhysicalCoordinates = fPhysicalSpace->GenerateRandomPosition();
 
 
-    Log::OutDebug( "Point coordinates in physical space:" );
-    for( unsigned int i=0; i<fDimension; i++ )
-	Log::OutDebug( "\t" + std::to_string( fPhysicalCoordinates->at(i) ) );
+    //Log::OutDebug( "Point coordinates in physical space:" );
+    //for( unsigned int i=0; i<fDimension; i++ )
+    //	Log::OutDebug( "\t" + std::to_string( fPhysicalCoordinates(i) ) );
     
     return;
 }
+
+void Point::GeneratePositionInSphere()
+{
+    fRotatedCoordinates = Eigen::VectorXd(fDimension);
+    for( unsigned int i=0; i<fDimension; i++ )
+	fRotatedCoordinates(i) = fRandom->GetGaussian();
+    fRotatedCoordinates.normalize();
+
+    //double v = fRandom->GetUniform( pow(0.5, fDimension), pow(1., fDimension) );
+    double v = fRandom->GetUniform( pow(5., fDimension), pow(7., fDimension) );
+    double r = pow( v, 1./fDimension );
+    fRotatedCoordinates *= r;
+    
+    return;
+}
+
+void Point::GeneratePositionInEllipsoid( Eigen::MatrixXd* ellipsoidmatrix,
+					 Eigen::MatrixXd* rotation,
+					 Eigen::VectorXd* translation )
+{
+    GeneratePositionInSphere();
+
+    fRotatedCoordinates = (*ellipsoidmatrix) * fRotatedCoordinates;
+    fPhysicalCoordinates = (*rotation) * fRotatedCoordinates + (*translation);
+
+    return;
+}
+
+/*
+void Point::GenerateFixedPosition( std::vector<double>* pos )
+{
+    fPhysicalCoordinates = new std::vector<double>(fDimension);
+    for( unsigned int i=0; i<fDimension; i++ )
+	fPhysicalCoordinates->at(i) = pos->at(i);
+    
+    return;
+}
+*/

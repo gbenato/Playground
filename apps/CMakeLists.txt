@@ -17,4 +17,8 @@ add_executable(TestModel TestModel.cxx)
 
 target_link_libraries(TestModel PUBLIC playgroundlib)
 
+add_executable(TestMachine TestMachine.cxx)
+
+target_link_libraries(TestMachine PUBLIC playgroundlib)
+
 

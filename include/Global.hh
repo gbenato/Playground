@@ -14,6 +14,7 @@ public:
 
     static bool UseROOT(){ return fUseROOT; };
 
+    static constexpr double epsilon = 1.e-20;
 };
 
 #endif

@@ -65,11 +65,15 @@ void Space::AddParameter( Parameter& parameter )
     return;
 }
 
-std::vector<double>* Space::GenerateRandomPosition()
+Eigen::VectorXd Space::GenerateRandomPosition()
+//std::vector<double>* Space::GenerateRandomPosition()
 {
-    std::vector<double>* pos = new std::vector<double>( fDimension );
+    Eigen::VectorXd pos = Eigen::VectorXd(fDimension);
     for( unsigned int i=0; i<fDimension; i++ )
-	    pos->at(i) = fParameterList[i].GenerateRandom();
+	pos(i) = fParameterList[i].GenerateRandom();
+    //std::vector<double>* pos = new std::vector<double>( fDimension );
+    //for( unsigned int i=0; i<fDimension; i++ )
+    //	    pos->at(i) = fParameterList[i].GenerateRandom();
 
     return pos;
 }
