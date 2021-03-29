@@ -15,15 +15,12 @@ Point::Point( Space* space )
     fDimension = space->GetDimension();
 
     fPhysicalCoordinates   = Eigen::VectorXd(fDimension);
-    fTranslatedCoordinates = Eigen::VectorXd(fDimension);
     fRotatedCoordinates    = Eigen::VectorXd(fDimension);
-    //fPhysicalCoordinates    = new std::vector<double>(fDimension);
-    //fTranslatedCoordinates  = new std::vector<double>(fDimension);
-    //fRotatedCoordinates     = new std::vector<double>(fDimension);
 
     fLikelihood           = 0.;
     fPriorProbability     = 0.;
     fPosteriorProbability = 0.;
+    fMeasuredProbability  = false;
     
     fRandom = Random::GetInstance();    
 }
@@ -59,7 +56,7 @@ void Point::GeneratePositionInSphere()
     fRotatedCoordinates.normalize();
 
     //double v = fRandom->GetUniform( pow(0.5, fDimension), pow(1., fDimension) );
-    double v = fRandom->GetUniform( pow(5., fDimension), pow(7., fDimension) );
+    double v = fRandom->GetUniform( pow(1., fDimension), pow(2., fDimension) );
     double r = pow( v, 1./fDimension );
     fRotatedCoordinates *= r;
     
@@ -72,9 +69,19 @@ void Point::GeneratePositionInEllipsoid( Eigen::MatrixXd* ellipsoidmatrix,
 {
     GeneratePositionInSphere();
 
-    fRotatedCoordinates = (*ellipsoidmatrix) * fRotatedCoordinates;
+    fRotatedCoordinates  = (*ellipsoidmatrix) * fRotatedCoordinates;
     fPhysicalCoordinates = (*rotation) * fRotatedCoordinates + (*translation);
+    fOriginalSpaceType   = Space::kTransformed;
+    
+    return;
+}
 
+void Point::ComputeTransformedCoordinates( Eigen::MatrixXd* ellipsoidmatrix,
+					   Eigen::MatrixXd* rotation,
+					   Eigen::VectorXd* translation )
+{
+    fRotatedCoordinates = (rotation->inverse()) * ( fPhysicalCoordinates - (*translation) );
+    //fRotatedCoordinates = (rotation->inverse()) * fPhysicalCoordinates;
     return;
 }
 
