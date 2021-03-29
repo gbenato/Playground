@@ -23,7 +23,7 @@ int main()
 
     Global::Initialize();
 
-    unsigned seed = 4;
+    unsigned seed = 1234;
     Random rdm(seed);
     
     MultiVariateModel* model = new MultiVariateModel();
@@ -43,6 +43,8 @@ int main()
     machine->DiagonalizeCovarianceMatrix();
     machine->GeneratePointsInEllipsoid( 100000 );
 
+    machine->UpdateContours();
+    
 #ifdef HAVE_ROOT
     TH2D* histo = machine->GetPhysicalPointsHisto();
     TArrow* pc0 = machine->GetPrincipalComponent(0);

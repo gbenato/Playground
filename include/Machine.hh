@@ -2,6 +2,7 @@
 #define Machine_hh
 
 #include <vector>
+#include <set>
 
 #include "eigen3/Eigen/Eigen"
 
@@ -13,6 +14,7 @@
 class Model;
 class Space;
 class Point;
+class Contour;
 
 class Machine
 {
@@ -33,6 +35,10 @@ private:
 
     std::vector<Point> fSpherePointList;
     unsigned int       fNSpherePoints;
+    Eigen::MatrixXd    fEllipsoidMatrix;
+    Eigen::MatrixXd    fEigenVectorMatrix;
+    
+    std::set<Contour> fContourList;
     
     void ComputeWeightedMean();
     
@@ -45,6 +51,7 @@ public:
     void ComputeCovarianceMatrix();
     void DiagonalizeCovarianceMatrix();
     void GeneratePointsInEllipsoid( unsigned int n );
+    void UpdateContours();
     
 #ifdef HAVE_ROOT
     TH2D* GetPhysicalPointsHisto();

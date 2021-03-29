@@ -4,6 +4,7 @@
 #include "Space.hh"
 #include "Point.hh"
 #include "Global.hh"
+#include "Contour.hh"
 
 #include <iostream>
 #include <iomanip>
@@ -42,12 +43,13 @@ void Machine::GeneratePhysicalPoints( unsigned int n )
 void Machine::MeasureProbabilities()
 {
     for( unsigned int i=0; i<fNPoints; i++ )
-	if( fPointList[i].GetPosteriorProbability() < Global::epsilon )
+	if( fPointList[i].IsProbabilityMeasured() == false )
 	    {
 		fPointList[i].SetLikelihood          ( fModel->MeasureLikelihood(&fPointList[i]) );
 		fPointList[i].SetPriorProbability    ( fModel->MeasurePrior(&fPointList[i])      );
 		fPointList[i].SetPosteriorProbability( fPointList[i].GetLikelihood() *
 						       fPointList[i].GetPriorProbability()       );
+		fPointList[i].SetMeasuredProbability();
 	    }
 
     return;
@@ -101,23 +103,54 @@ void Machine::DiagonalizeCovarianceMatrix()
 
 void Machine::GeneratePointsInEllipsoid( unsigned int n )
 {
-    Eigen::MatrixXd ellipsoidmatrix = Eigen::MatrixXd::Constant( fDimension, fDimension, 0. );
+    fEllipsoidMatrix = Eigen::MatrixXd::Constant( fDimension, fDimension, 0. );
     for( unsigned int i=0; i<fDimension; i++ )
-	//ellipsoidmatrix(i,i) = pow( fEigenSolver.eigenvalues()(i), 2. );
-	ellipsoidmatrix(i,i) = fEigenSolver.eigenvalues()(i);
+	fEllipsoidMatrix(i,i) = sqrt( fEigenSolver.eigenvalues()(i) );
+	//fEllipsoidMatrix(i,i) = fEigenSolver.eigenvalues()(i);
 
-    Eigen::MatrixXd eigenvectors = fEigenSolver.eigenvectors();
+    fEigenVectorMatrix = fEigenSolver.eigenvectors();
+    //Eigen::MatrixXd eigenvectors = fEigenSolver.eigenvectors();
     
      for( unsigned int i=0; i<n; i++ )
 	{
 	    fSpherePointList.push_back( Point( fPhysicalSpace ) );
-	    fSpherePointList.back().GeneratePositionInEllipsoid( &ellipsoidmatrix,
-								 &eigenvectors,
+	    fSpherePointList.back().GeneratePositionInEllipsoid( &fEllipsoidMatrix,
+								 &fEigenVectorMatrix,
 								 &fWeightedMean );
 	}
-    fNSpherePoints = fSpherePointList.size();   
+    fNSpherePoints = fSpherePointList.size();
+    
     return;
 }
+
+void Machine::UpdateContours()
+{
+    for( unsigned int i=0; i<fNPoints; i++ )
+	fContourList.insert( Contour( &(fPointList[i]),
+				      &fEllipsoidMatrix,
+				      &fEigenVectorMatrix,
+				      &fWeightedMean ) );
+
+    std::set<Contour>::iterator it;
+    int i=0;
+    for( it=fContourList.begin(); it!=fContourList.end(); it++ )
+	{
+	    Log::OutDebug( std::to_string(i) + "\t" +
+			   std::to_string(it->GetPoint()->GetRotated(0)) + "\t" +
+			   std::to_string(it->GetPoint()->GetRotated(1)) + "\t" +
+			   std::to_string(it->GetHeight()) + "\t" +
+			   std::to_string(it->GetNSigma()) + "\t" +
+			   std::to_string(it->GetArea()) + "\t" +
+			   std::to_string(it->GetVolume()) );
+	    i++;
+	}
+    return;
+}
+
+
+
+
+
 
 #ifdef HAVE_ROOT
 TH2D* Machine::GetPhysicalPointsHisto()
