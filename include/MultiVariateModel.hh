@@ -13,8 +13,6 @@ class MultiVariateModel : public Model
 
 private:
     unsigned int fDimension;
-    //double*      fMean;
-    //double*      fSigma;
     Random*      fRandom;
     Eigen::Matrix2d fRotation;
     Eigen::Matrix2d fInverseRotation;
