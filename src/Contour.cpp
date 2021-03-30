@@ -40,6 +40,7 @@ Contour::Contour( const Contour& other )
     fNSigma            = other.GetNSigma();
     fVolume            = other.GetVolume();
     fIntegral          = other.GetIntegral();
+    
 }
 
 Contour::~Contour()
@@ -71,7 +72,7 @@ void Contour::ComputeVolume()
     return;
 }
 
-void Contour::SetIntegral( double integral )
+void Contour::SetIntegral( double integral ) const
 {
     fIntegral = integral;
     

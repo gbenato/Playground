@@ -16,7 +16,7 @@ private:
     double           fVolume;
     double           fNSigma;
     double           fHeight;
-    double           fIntegral;// Volume of n-dim ellipsoid times contour height
+    mutable double   fIntegral;// Volume of n-dim ellipsoid times contour height
 
     void ComputeVolume();
     
@@ -32,6 +32,9 @@ public:
     Contour& operator = ( Contour const& other );
     bool     operator < ( const Contour& other ) const;
 
+    // IMPORTANT NOTE:
+    // All methods declared as 'const' because Contour class is used inside a std::set
+    
     // Getters
     Point*           GetPoint            () const { return fPoint;             };
     Eigen::MatrixXd* GetEllipsoidMatrix  () const { return fEllipsoidMatrix;   };
@@ -43,7 +46,7 @@ public:
     double           GetIntegral         () const { return fIntegral;          };
 
     // Setters
-    void SetIntegral( double integral );
+    void SetIntegral( double integral ) const;
 };
 
 #endif

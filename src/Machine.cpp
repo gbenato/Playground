@@ -130,6 +130,8 @@ void Machine::UpdateContours()
 				      &fEllipsoidMatrix,
 				      &fEigenVectorMatrix,
 				      &fWeightedMean ) );
+
+    ComputeContourIntegrals();
     
     std::set<Contour>::iterator it;
     int i=0;
@@ -141,13 +143,31 @@ void Machine::UpdateContours()
 			   std::to_string(it->GetHeight()) + "\t" +
 			   std::to_string(it->GetNSigma()) + "\t" +
 			   std::to_string(it->GetVolume()) + "\t" +
+			   //std::to_string(it->fIntegral) );
 			   std::to_string(it->GetIntegral()) );
 	    i++;
 	}
     return;
 }
 
+void Machine::ComputeContourIntegrals()
+{
+    double prevheight = 0.;
+    double integral   = 0.;
+    double totalintegral = 0.;
+    std::set<Contour>::iterator it;
+    for( it=fContourList.begin(); it!=fContourList.end(); it++ )
+	{
+	    integral = it->GetVolume() * ( it->GetHeight() - prevheight );
+	    it->SetIntegral( integral );
+	    prevheight = it->GetHeight();
+	    totalintegral += integral;
+	}
 
+    Log::OutDebug( "Total integral: " + std::to_string( totalintegral ) );
+    
+    return;
+}
 
 
 

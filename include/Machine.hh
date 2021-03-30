@@ -41,6 +41,7 @@ private:
     std::set<Contour> fContourList;
     
     void ComputeWeightedMean();
+    void ComputeContourIntegrals();
     
 public:
     Machine( Model* model );
