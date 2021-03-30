@@ -68,9 +68,10 @@ double MultiVariateModel::MeasureLikelihood( Point* point )
 
     Eigen::Vector2d tmp = fRotation * ( point->GetPhysical() - fMean );
     for( unsigned int i=0; i<fDimension; i++ )
-	likelihood *= exp( -pow( tmp(i) - fRotatedMean(i), 2. ) / 2. / pow( fRotatedSigma(i), 2. ) ) / fRotatedSigma(i);
-	//likelihood *= exp( -pow( point->GetPhysical(i) - fMean[i], 2. ) / 2. / pow( fSigma[i], 2. ) ) / fSigma[i];
-    likelihood /= sqrt( 2. * M_PI * fDimension );
+	likelihood *= exp( -pow( tmp(i) - fRotatedMean(i), 2. ) / 2. / pow( fRotatedSigma(i), 2. ) )
+	    / fRotatedSigma(i);
+
+    likelihood *= pow( 2. * M_PI, -0.5 *  fDimension );
 
     return likelihood;
 }
