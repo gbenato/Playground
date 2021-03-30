@@ -3,6 +3,8 @@
 #include "Log.hh"
 #include "Space.hh"
 
+#include <iostream>
+
 Contour::Contour( Point*           point,
 		  Eigen::MatrixXd* ellipsoidmatrix,
 		  Eigen::MatrixXd* eigenvectormatrix,
@@ -23,19 +25,21 @@ Contour::Contour( Point*           point,
     fNSigma            = 0.;
     fVolume            = 0.;
     fIntegral          = 0.;
-    fIntegralComputed  = false;
-    ComputeIntegral();
+    ComputeVolume();
+
 }
 
 Contour::Contour( const Contour& other )
 {
+
     fPoint             = other.GetPoint();
-    fHeight            = other.GetHeight();
     fEllipsoidMatrix   = other.GetEllipsoidMatrix();
     fEigenvectorMatrix = other.GetEigenvectorMatrix();
     fMean              = other.GetMean();
-    
-    ComputeIntegral();
+    fHeight            = other.GetHeight();
+    fNSigma            = other.GetNSigma();
+    fVolume            = other.GetVolume();
+    fIntegral          = other.GetIntegral();
 }
 
 Contour::~Contour()
@@ -49,62 +53,46 @@ void Contour::ComputeVolume()
 	fPoint->ComputeTransformedCoordinates( fEllipsoidMatrix,
 					       fEigenvectorMatrix,
 					       fMean );
-    
-    fNSigma = 0.;
 
+    // Compute equivalent number of sigmas from mean
+    fNSigma = 0.;
     for( unsigned int i=0; i<fPoint->GetDimension(); i++ )
 	fNSigma += pow( fPoint->GetRotated(i), 2. )
 	    / pow( fEllipsoidMatrix->coeff(i,i), 2. );
     fNSigma = sqrt( fNSigma );
 
-    //Log::OutDebug( "Gamma: " + std::to_string( std::tgamma( 0.5 * fPoint->GetDimension() + 1 ) ) );
+    // Compute volume of n-dimensional ellipsoid
     double n = fPoint->GetDimension();
-    //fVolume = 2. * pow( M_PI, 0.5*n ) / std::tgamma( 0.5*n );
     fVolume = pow( M_PI, 0.5*n ) / std::tgamma( 0.5*n + 1. );
     fVolume *= pow( fNSigma, n );
     for( unsigned int i=0; i<fPoint->GetDimension(); i++ )
 	fVolume *= fEllipsoidMatrix->coeff(i,i);
     
-    //Log::OutDebug( "Volume: " + std::to_string(fVolume) );
+    return;
+}
+
+void Contour::SetIntegral( double integral )
+{
+    fIntegral = integral;
     
     return;
 }
 
-void Contour::ComputeIntegral()
-{
-    ComputeVolume();
-    
-    fIntegral         = fVolume * fHeight;
-    fIntegralComputed = true;
-    
-    return;
-}
-/*
-double Contour::GetVolume() const
-{
-    //if( fIntegralComputed == false )
-	//ComputeIntegral();
-    
-    return fVolume;
-}
-
-double Contour::GetIntegral()
-{
-    //if( fIntegralComputed == false )
-    //	ComputeIntegral();
-    
-    return fIntegral;
-}
-*/
 // Operators
 Contour& Contour::operator = ( Contour const& other )
 {
     if( (void*)this == (void*)&other )
 	return *this;
     
-    fPoint  = other.GetPoint();
-    fHeight = other.GetHeight();
-    ComputeIntegral();
+    fPoint             = other.GetPoint();
+    fEllipsoidMatrix   = other.GetEllipsoidMatrix();
+    fEigenvectorMatrix = other.GetEigenvectorMatrix();
+    fMean              = other.GetMean();
+    fHeight            = other.GetHeight();
+    fNSigma            = other.GetNSigma();
+    fVolume            = other.GetVolume();
+    fIntegral          = other.GetIntegral();
+
     
     return *this;
 }

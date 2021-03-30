@@ -130,7 +130,7 @@ void Machine::UpdateContours()
 				      &fEllipsoidMatrix,
 				      &fEigenVectorMatrix,
 				      &fWeightedMean ) );
-
+    
     std::set<Contour>::iterator it;
     int i=0;
     for( it=fContourList.begin(); it!=fContourList.end(); it++ )

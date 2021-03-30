@@ -17,7 +17,6 @@ private:
     double           fNSigma;
     double           fHeight;
     double           fIntegral;// Volume of n-dim ellipsoid times contour height
-    bool             fIntegralComputed;
 
     void ComputeVolume();
     
@@ -32,8 +31,6 @@ public:
     // Operators
     Contour& operator = ( Contour const& other );
     bool     operator < ( const Contour& other ) const;
-    
-    void ComputeIntegral();
 
     // Getters
     Point*           GetPoint            () const { return fPoint;             };
@@ -44,8 +41,9 @@ public:
     double           GetNSigma           () const { return fNSigma;            };
     double           GetVolume           () const { return fVolume;            };
     double           GetIntegral         () const { return fIntegral;          };
-    bool             IsIntegralComputed  () const { return fIntegralComputed;  };
-    
+
+    // Setters
+    void SetIntegral( double integral );
 };
 
 #endif
