@@ -13,13 +13,13 @@ private:
     Eigen::MatrixXd* fEllipsoidMatrix;
     Eigen::MatrixXd* fEigenvectorMatrix;
     Eigen::VectorXd* fMean;
-    double           fArea;// This is actually the volume of the n-dimensional ellipsoid
+    double           fVolume;
     double           fNSigma;
     double           fHeight;
-    double           fVolume;// This is the area (volume of n-dim ellipsoid) times its height
-    bool             fVolumeComputed;
+    double           fIntegral;// Volume of n-dim ellipsoid times contour height
+    bool             fIntegralComputed;
 
-    void ComputeArea();
+    void ComputeVolume();
     
 public:
     Contour( Point*           point,
@@ -33,7 +33,7 @@ public:
     Contour& operator = ( Contour const& other );
     bool     operator < ( const Contour& other ) const;
     
-    void ComputeVolume();
+    void ComputeIntegral();
 
     // Getters
     Point*           GetPoint            () const { return fPoint;             };
@@ -42,9 +42,9 @@ public:
     Eigen::VectorXd* GetMean             () const { return fMean;              };
     double           GetHeight           () const { return fHeight;            };
     double           GetNSigma           () const { return fNSigma;            };
-    double           GetArea             () const { return fArea;              };
     double           GetVolume           () const { return fVolume;            };
-    bool             IsVolumeComputed    () const { return fVolumeComputed;    };
+    double           GetIntegral         () const { return fIntegral;          };
+    bool             IsIntegralComputed  () const { return fIntegralComputed;  };
     
 };
 

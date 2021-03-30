@@ -21,10 +21,10 @@ Contour::Contour( Point*           point,
     fEigenvectorMatrix = eigenvectormatrix;
     fMean              = mean;
     fNSigma            = 0.;
-    fArea              = 0.;
     fVolume            = 0.;
-    fVolumeComputed    = false;
-    ComputeVolume();
+    fIntegral          = 0.;
+    fIntegralComputed  = false;
+    ComputeIntegral();
 }
 
 Contour::Contour( const Contour& other )
@@ -35,7 +35,7 @@ Contour::Contour( const Contour& other )
     fEigenvectorMatrix = other.GetEigenvectorMatrix();
     fMean              = other.GetMean();
     
-    ComputeVolume();
+    ComputeIntegral();
 }
 
 Contour::~Contour()
@@ -43,7 +43,7 @@ Contour::~Contour()
     ;
 }
 
-void Contour::ComputeArea()// This is actually the volume of the n-dimensional ellipsoid
+void Contour::ComputeVolume()
 {
     if( fPoint->GetOriginalSpaceType() == Space::kPhysical )
 	fPoint->ComputeTransformedCoordinates( fEllipsoidMatrix,
@@ -59,41 +59,41 @@ void Contour::ComputeArea()// This is actually the volume of the n-dimensional e
 
     //Log::OutDebug( "Gamma: " + std::to_string( std::tgamma( 0.5 * fPoint->GetDimension() + 1 ) ) );
     double n = fPoint->GetDimension();
-    //fArea = 2. * pow( M_PI, 0.5*n ) / std::tgamma( 0.5*n );
-    fArea = pow( M_PI, 0.5*n ) / std::tgamma( 0.5*n + 1. );
-    fArea *= pow( fNSigma, n );
+    //fVolume = 2. * pow( M_PI, 0.5*n ) / std::tgamma( 0.5*n );
+    fVolume = pow( M_PI, 0.5*n ) / std::tgamma( 0.5*n + 1. );
+    fVolume *= pow( fNSigma, n );
     for( unsigned int i=0; i<fPoint->GetDimension(); i++ )
-	fArea *= fEllipsoidMatrix->coeff(i,i);
+	fVolume *= fEllipsoidMatrix->coeff(i,i);
     
-    //Log::OutDebug( "Area: " + std::to_string(fArea) );
+    //Log::OutDebug( "Volume: " + std::to_string(fVolume) );
     
     return;
 }
 
-void Contour::ComputeVolume()
+void Contour::ComputeIntegral()
 {
-    ComputeArea();
+    ComputeVolume();
     
-    fVolume         = fArea * fHeight;
-    fVolumeComputed = true;
+    fIntegral         = fVolume * fHeight;
+    fIntegralComputed = true;
     
     return;
 }
 /*
-double Contour::GetArea() const
+double Contour::GetVolume() const
 {
-    //if( fVolumeComputed == false )
-	//ComputeVolume();
-    
-    return fArea;
-}
-
-double Contour::GetVolume()
-{
-    //if( fVolumeComputed == false )
-    //	ComputeVolume();
+    //if( fIntegralComputed == false )
+	//ComputeIntegral();
     
     return fVolume;
+}
+
+double Contour::GetIntegral()
+{
+    //if( fIntegralComputed == false )
+    //	ComputeIntegral();
+    
+    return fIntegral;
 }
 */
 // Operators
@@ -104,7 +104,7 @@ Contour& Contour::operator = ( Contour const& other )
     
     fPoint  = other.GetPoint();
     fHeight = other.GetHeight();
-    ComputeVolume();
+    ComputeIntegral();
     
     return *this;
 }

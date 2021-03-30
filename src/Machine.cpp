@@ -140,8 +140,8 @@ void Machine::UpdateContours()
 			   std::to_string(it->GetPoint()->GetRotated(1)) + "\t" +
 			   std::to_string(it->GetHeight()) + "\t" +
 			   std::to_string(it->GetNSigma()) + "\t" +
-			   std::to_string(it->GetArea()) + "\t" +
-			   std::to_string(it->GetVolume()) );
+			   std::to_string(it->GetVolume()) + "\t" +
+			   std::to_string(it->GetIntegral()) );
 	    i++;
 	}
     return;
